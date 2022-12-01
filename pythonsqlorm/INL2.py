@@ -87,5 +87,3 @@ with app.app_context():
             print("Ha en fortsatt trevlig dag!")
             time.sleep(1)
             exit()
-
-
