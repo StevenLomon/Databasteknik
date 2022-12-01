@@ -31,6 +31,7 @@ with app.app_context():
         print("1. Skapa artist")
         print("2. Skapa album")
         print("3. Skapa låt")
+        print("4. Snoppar o orkaner")
 
         i = int(input("Ange val: "))
         if i == 1:
@@ -55,10 +56,15 @@ with app.app_context():
             b.length = int(input("Ange längd i seuknder: "))
             for m in Album.query.all():
                 print(f"{m.id} {m.name}")
-            sel = int(input("Vilken album hör denna sång till? "))
+            sel = int(input("Vilket album hör denna sång till? "))
             b.album_id = sel
             db.session.add(b)
             db.session.commit()
+        elif i == 4:
+            b = Song()
+            b.name = input("hur många snoppar?")
+            b.length = int(input("hur lång e din snopp?"))
+
 
 
 

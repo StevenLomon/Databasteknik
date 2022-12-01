@@ -16,7 +16,7 @@ def createNew():
     b = Employee()
     b.name = input("Ange namn: ")
     b.age = int(input("Ange ålder: "))
-    b.datehired = getDatetime("sv", "Ange anställningsdatum: ")
+    b.datehired = getDatetime("sv", "Ange anställningsdatum på form 'yyyy-mm-dd': ")
     db.session.add(b)
     db.session.commit()
 
@@ -31,7 +31,7 @@ def updateExisting():
     elif sel == 2:
         b.age = int(input("Ange ny ålder: "))
     elif sel == 3:
-        b.datehired = int(input("Ange nytt anställningsår: "))
+        b.datehired = int(input("Ange nytt anställningsdatum: "))
     db.session.commit()
 
 def searchExisting():
