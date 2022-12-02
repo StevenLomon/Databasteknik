@@ -25,6 +25,12 @@ class Room(db.Model):
     available = db.Column(db.Boolean, unique=False, nullable=False)
     eligible_extra_bed = db.Column(db.Boolean, unique=False, nullable=False)
     reservation_id=db.Column(db.Integer, db.ForeignKey('reservation.id'), nullable=True)
+    roomstype = db.relationship("RoomType", back_populates="rooms")
+
+class RoomType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(6), unique=False, nullable=False)
+    rooms = db.relationship("Room", back_populates="roomstype")
 
 class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,6 +38,7 @@ class Reservation(db.Model):
     start_date = db.Column(db.Date, unique=False, nullable=False)
     end_date = db.Column(db.Date, unique=False, nullable=False)
     extra_bed = db.Column(db.Boolean, unique=False, nullable=False)
+    #reservation_nr = db.Column(db.String(6), unique=False, nullable=False)
     customer_id=db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     room_id=db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
 
@@ -78,6 +85,7 @@ with app.app_context():
             print("LEDIGA RUM")
             for r in Room.query.all(): #TODO implement show only available
                 print(f"{r.id} {r.type} {r.size}")
+            b = input("\nTryck enter för att gå tillbaka")
         elif i == 2:
             time.sleep(0.5)
             os.system('cls')
@@ -108,13 +116,21 @@ with app.app_context():
             inv.is_paid = False
             inv.customer_id = c.id
             inv.due_date = r.start_date + timedelta(days = invoiceDueTime)
-            inv.url = "aslkfjalsf"
+            inv.url = input("Ange url: ")
             inv.reservation_id = r.id
             db.session.add(inv)
             db.session.commit()
             print("Rum bokat. Vi ser fram emot ditt besök!")
             time.sleep(2)
             os.system('cls')
+        elif i == 3: #TODO Implement reservation number and check if no reservations
+            reservations = []
+            for r in Reservation.query.all():
+                print(f"{r.id} {r.nr_of_nights} {r.start_date} {r.end_date}")
+                reservations.append(r.id)
+            sel = getIntMenuInput("Vilken bokning ska ändras?", reservations[0], reservations[-1])
+        elif i == 4:
+            pass
         elif i == 5:
             time.sleep(0.5)
             os.system('cls')
